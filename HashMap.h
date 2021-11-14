@@ -19,7 +19,7 @@ class HashMap
 
         HashMap& add(File& to_add);
         HashMap& remove(const std::shared_ptr<File>& to_remove);
-        hash_set_type::iterator& lookup(const std::shared_ptr<File>& term);
+        bool lookup(const std::shared_ptr<File>& term);
         HashMap& print_all();
 
     private:

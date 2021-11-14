@@ -14,5 +14,7 @@ int main()
         h_set.add(tmp);
     }
 
+    if(h_set.lookup() == h_set.end())
+
     h_set.print_all();
 }

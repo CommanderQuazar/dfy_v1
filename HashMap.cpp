@@ -22,11 +22,13 @@ HashMap& HashMap::add(File &to_add)
     return *this;
 }
 
-hash_set_type::iterator& HashMap::lookup(const std::shared_ptr<File>& term)
+bool HashMap::lookup(const std::shared_ptr<File>& term)
 {
     auto ret = hash_set.find(term);
-    return ret;
-    //????
+    if(ret == hash_set.end())
+        return false;
+    else
+        return true;
 }
 
 HashMap& HashMap::print_all()
