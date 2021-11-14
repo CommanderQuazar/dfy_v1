@@ -24,11 +24,13 @@ class File
         File& operator=(const File& rhs);
 
         File& update_msg(const std::string& new_msg) { msg = new_msg; return *this; };
+        std::string get_msg() { return msg; };
 
     private:
         std::string msg;
         std::set<Folder*> occurrences;
 };
+
 
 
 #endif //DFY_V1_FILE_H
