@@ -5,26 +5,25 @@
 #include "HashMap.h"
 #include <memory>
 
-
-HashMap& HashMap::remove(const std::shared_ptr<File>& to_remove)
+HashMap& HashMap::remove(const std::string& name)
 {
-    auto ret = hash_set.find(to_remove);
+    auto ret = hash_set.find(name);
     if(ret == hash_set.end())
         return *this;
     else
-        hash_set.erase(to_remove);
+        hash_set.erase(name);
     return *this;
 }
 
-HashMap& HashMap::add(File &to_add)
+HashMap& HashMap::add(const std::string& name, File &to_add)
 {
-    hash_set.insert(std::make_shared<File>(to_add));
+    hash_set.insert({name, std::make_shared<File>(to_add)});
     return *this;
 }
 
-bool HashMap::lookup(const std::shared_ptr<File>& term)
+bool HashMap::lookup(const std::string& lookup_file)
 {
-    auto ret = hash_set.find(term);
+    auto ret = hash_set.find(lookup_file);
     if(ret == hash_set.end())
         return false;
     else
@@ -35,8 +34,10 @@ HashMap& HashMap::print_all()
 {
     for(auto begin = hash_set.begin(); begin != hash_set.end(); )
     {
-        std::cout << "Massage: "
-                  << (*begin++)->get_msg()
+        std::cout << "File Name: "
+                  << (*begin).first
+                  << "\n Message: "
+                  << (*begin++).second->get_msg()
                   << std::endl;
     }
     return *this;

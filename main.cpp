@@ -8,13 +8,16 @@ int main()
 
     for (int i = 0; i < 5; ++i)
     {
-        std::string in;
-        std::cin >> in;
+        std::string in, name;
+        std::cin >> name >> in;
         File tmp(in);
-        h_set.add(tmp);
+        h_set.add(name, tmp);
     }
 
-    if(h_set.lookup() == h_set.end())
+    if(h_set.lookup("Lookup"))
+        std::cout << "Found!" << std::endl;
+    else
+        std::cout << "Not Found!" << std::endl;
 
     h_set.print_all();
 }
