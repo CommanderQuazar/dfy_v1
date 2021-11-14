@@ -19,10 +19,11 @@ class File
                 { occurrences.insert(to_add_f.begin(), to_add_f.end()); };
         File(File& to_copy) = default;
         File(File&& to_move) noexcept : msg(std::move(to_move.msg)), occurrences(std::move(to_move.occurrences)) { };
+
+        ~File() = default;
         File& operator=(const File& rhs);
 
         File& update_msg(const std::string& new_msg) { msg = new_msg; return *this; };
-        File& remove_all();
 
     private:
         std::string msg;

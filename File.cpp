@@ -6,12 +6,13 @@
 
 File &File::operator=(const File &rhs)
 {
+    auto cp_msg = rhs.msg;
+    auto occ = rhs.occurrences;
+
+    this->~File();
+    msg = cp_msg;
+    occurrences = occ;
+
     return *this;
 }
 
-File &File::remove_all()
-{
-
-
-    return *this;
-}
