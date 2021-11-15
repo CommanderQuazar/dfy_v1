@@ -25,8 +25,12 @@ class File
 
         File& update_msg(const std::string& new_msg) { msg = new_msg; return *this; };
         std::string get_msg() { return msg; };
+        std::string get_name() { return file_name; }
+        File& add_occ(Folder* folder_ptr) { occurrences.insert(folder_ptr); return *this; };
+        File& remove_occ(Folder* folder_ptr) { occurrences.erase(folder_ptr); return *this; }
 
     private:
+        std::string file_name;
         std::string msg;
         std::set<Folder*> occurrences;
 };
