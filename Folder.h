@@ -9,12 +9,20 @@
 #include <set>
 #include <utility>
 #include "File.h"
+#include "HashMap.h"
 
 class Folder
 {
     public:
+        Folder() = default;
+        explicit Folder(std::string  f_name) : folder_name(std::move(f_name)) { };
+
+        Folder& add(File& add, HashMap& map);
+        Folder& remove(std::string& key, HashMap& map);
+        Folder& search(std::string& term, HashMap& map);
 
     private:
+        std::string folder_name;
         std::set<std::shared_ptr<File>> content;
 };
 

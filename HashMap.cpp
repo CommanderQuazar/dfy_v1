@@ -36,7 +36,7 @@ HashMap& HashMap::print_all()
     {
         std::cout << "File Name: "
                   << (*begin).first
-                  << "\n Message: "
+                  << "\nMessage: "
                   << (*begin++).second->get_msg()
                   << std::endl;
     }
