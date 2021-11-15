@@ -15,10 +15,11 @@ HashMap& HashMap::remove(const std::string& name)
     return *this;
 }
 
-HashMap& HashMap::add(const std::string& name, File &to_add)
+std::shared_ptr<File> HashMap::add(const std::string& name, File &to_add)
 {
-    hash_set.insert({name, std::make_shared<File>(to_add)});
-    return *this;
+    auto file_ptr = std::make_shared<File>(to_add);
+    hash_set.insert({name, file_ptr});
+    return file_ptr;
 }
 
 bool HashMap::lookup(const std::string& lookup_file)

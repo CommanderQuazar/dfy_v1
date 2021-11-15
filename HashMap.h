@@ -17,7 +17,7 @@ class HashMap
         HashMap() = default;
         explicit HashMap(const std::string& name, File& file_obj) { hash_set.insert(
                     {name, std::make_shared<File>(file_obj)}); };
-        HashMap& add(const std::string& name, File& to_add);
+        std::shared_ptr<File> add(const std::string& name, File& to_add);
         HashMap& remove(const std::string& name);
         bool lookup(const std::string& lookup_msg);
         HashMap& print_all();
