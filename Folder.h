@@ -17,8 +17,8 @@ class Folder
         Folder() = default;
         explicit Folder(std::string  f_name) : folder_name(std::move(f_name)) { };
 
-        Folder& add(File& add, HashMap& map);
-        Folder& remove(std::string& key, HashMap& map);
+        Folder& add(File& file, HashMap& map);
+        Folder& remove(const std::shared_ptr<File>& key, HashMap& map);
         Folder& search(std::string& term, HashMap& map);
 
     private:
