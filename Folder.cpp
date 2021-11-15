@@ -28,8 +28,16 @@ Folder &Folder::remove(const std::shared_ptr<File>& key, HashMap& map)
     return *this;
 }
 
-Folder &Folder::search(std::string &term, HashMap& map)
+//Searches the folder for the sought term
+//Accesses the HashMap lookup function to check weather the file exists
+//Returns an iter to the element if found
+std::set<std::shared_ptr<File>>::iterator Folder::search(std::string &term, HashMap& map)
 {
-
+    auto ret = map.lookup(term);
+    auto iter_hit = content.find(ret.second);
+    if(ret.first && iter_hit != content.end())
+        return iter_hit;
+    else
+        return content.end();
 }
 

@@ -19,7 +19,7 @@ class Folder
 
         Folder& add(File& file, HashMap& map);
         Folder& remove(const std::shared_ptr<File>& key, HashMap& map);
-        Folder& search(std::string& term, HashMap& map);
+        std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
 
     private:
         std::string folder_name;
