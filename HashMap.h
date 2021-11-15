@@ -19,7 +19,7 @@ class HashMap
                     {name, std::make_shared<File>(file_obj)}); };
         std::shared_ptr<File> add(const std::string& name, File& to_add);
         HashMap& remove(const std::string& name);
-        bool lookup(const std::string& lookup_msg);
+        std::pair<size_t, std::shared_ptr<File>> lookup(const std::string& lookup_msg);
         HashMap& print_all();
 
     private:

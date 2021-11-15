@@ -5,6 +5,7 @@
 #include "HashMap.h"
 #include <memory>
 
+//Removes a file from the HashMap
 HashMap& HashMap::remove(const std::string& name)
 {
     auto ret = hash_set.find(name);
@@ -15,6 +16,7 @@ HashMap& HashMap::remove(const std::string& name)
     return *this;
 }
 
+//Adds a file into the HashMap
 std::shared_ptr<File> HashMap::add(const std::string& name, File &to_add)
 {
     auto file_ptr = std::make_shared<File>(to_add);
@@ -22,13 +24,16 @@ std::shared_ptr<File> HashMap::add(const std::string& name, File &to_add)
     return file_ptr;
 }
 
-bool HashMap::lookup(const std::string& lookup_file)
+//Member function takes a string and searches the keys of the map
+//Returns a pair with a status pit and a pointer to the file (if found)
+//If not found returns nullptr
+std::pair<size_t, std::shared_ptr<File>> HashMap::lookup(const std::string& lookup_file)
 {
     auto ret = hash_set.find(lookup_file);
     if(ret == hash_set.end())
-        return false;
+        return {0, nullptr};
     else
-        return true;
+        return {1, ret->second};
 }
 
 HashMap& HashMap::print_all()
