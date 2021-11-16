@@ -59,10 +59,35 @@ FileSystemManager &FileSystemManager::create_folder()
 //Creates a new file
 FileSystemManager &FileSystemManager::create_file()
 {
-    std::string fi_name;
-	out << "\nEnter a file's name: ";
-	std::cin >> fi_name;
+	std::string fi_name, f_name, content;
+	out << "Folders:" << std::endl;
+	display_all_folders();
+	do
+	{
+		out << "\nEnter a folder name: ";
+	}
+	while(std::cin >> f_name && chk_folder_name(f_name));
 
+	//Gets the Folder to operate on
+	auto folder_iter = system_layout.second.find(f_name);
 
+	do
+	{
+		out << "\nEnter a file name: ";
+	}
+	while(std::cin >> fi_name && folder_iter->second.chk_exist(fi_name));
+
+	out << "Enter the file contents: ";
+	std::cin >> content;
+	File to_add(fi_name, content, &folder_iter->second);
+
+	//Add to hashmap
+	system_layout.first->add(fi_name, to_add);
+
+	//Add to folder
+	folder_iter->second.add(to_add, *system_layout.first);
+
+	return *this;
 }
+
 
