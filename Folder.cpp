@@ -47,3 +47,9 @@ inline void Folder::print_files(std::ostream& out_s) const
         out_s << "\t" << x->get_name() << std::endl;
 }
 
+//Checks if a file exists under the folder
+inline bool Folder::chk_exist(const std::string &to_chk)
+{
+	return content.find(std::make_shared<File>(to_chk)) != content.end();
+}
+

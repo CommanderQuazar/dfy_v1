@@ -11,6 +11,14 @@
 #include "File.h"
 #include "HashMap.h"
 
+typedef std::shared_ptr<File> file_ptr_t;
+
+//Compare class used to find values in Folder content member
+struct Compare
+{
+	bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
+};
+
 class Folder
 {
     public:
@@ -21,12 +29,15 @@ class Folder
         Folder& remove(const std::shared_ptr<File>& key, HashMap& map);
         std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
 
+		bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
+
         std::string get_folder_name() const { return folder_name; };
         void print_files(std::ostream& out_s) const;
+		bool chk_exist(const std::string& to_chk);
 
     private:
         std::string folder_name;
-        std::set<std::shared_ptr<File>> content;
+        std::set<file_ptr_t, Compare> content;
 };
 
 
