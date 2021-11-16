@@ -41,9 +41,9 @@ HashMap& HashMap::print_all()
     for(auto begin = hash_set.begin(); begin != hash_set.end(); )
     {
         std::cout << "File Name: "
-                  << (*begin).first
-                  << "\nMessage: "
-                  << (*begin++).second->get_msg()
+                  << (*begin++).first
+                  //<< "\nMessage: "
+                  //<< (*begin++).second->get_msg()
                   << std::endl;
     }
     return *this;
