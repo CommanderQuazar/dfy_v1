@@ -13,13 +13,14 @@ class FileSystemManager
 {
     public:
         //Constructors
-        FileSystemManager() = default;
-        FileSystemManager(HashMap * table, std::set<Folder>& dir) : system_layout({table, dir}) { };
+        explicit FileSystemManager(std::ostream& out_stream) : out(out_stream) { };
+        FileSystemManager(HashMap * table, std::set<Folder>& dir, std::ostream& out_stream) :
+                            system_layout({table, dir}), out(out_stream) { };
 
         //Display
-        FileSystemManager& display_all_folders() const { };
-        FileSystemManager& display_all_files() const { };
-        FileSystemManager& display_all() const { };
+        FileSystemManager& display_all_folders() ;
+        FileSystemManager& display_all_files();
+        FileSystemManager& display_all();
 
         //Creators
         FileSystemManager& create_folder() { };
@@ -33,6 +34,7 @@ class FileSystemManager
         FileSystemManager& delete_folder() { };
 
     private:
+        std::ostream& out;
         std::pair<HashMap *, std::set<Folder>> system_layout;
 };
 
