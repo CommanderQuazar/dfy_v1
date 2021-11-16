@@ -21,6 +21,9 @@ class Folder
         Folder& remove(const std::shared_ptr<File>& key, HashMap& map);
         std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
 
+        std::string get_folder_name() const { return folder_name; };
+        void print_files(std::ostream& out_s) const;
+
     private:
         std::string folder_name;
         std::set<std::shared_ptr<File>> content;
