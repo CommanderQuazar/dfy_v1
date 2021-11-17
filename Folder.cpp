@@ -18,6 +18,18 @@ Folder& Folder::add(File &file, HashMap& map)
     return *this;
 }
 
+//Member function moves a EXISTING file into its contents
+Folder &Folder::move(const std::shared_ptr<File>& m_file)
+{
+	//Adds occurrence to the File obj
+	m_file->add_occ(this);
+
+	//Add a ptr to content that points to the file in the hash map
+	content.insert(m_file);
+	return *this;
+}
+
+
 Folder &Folder::remove(const std::shared_ptr<File>& key, HashMap& map)
 {
     //Remove the file from the folder's content

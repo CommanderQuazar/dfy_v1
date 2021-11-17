@@ -26,6 +26,7 @@ class Folder
         explicit Folder(std::string  f_name) : folder_name(std::move(f_name)) { };
 
         Folder& add(File& file, HashMap& map);
+		Folder& move(const std::shared_ptr<File>& m_file);
         Folder& remove(const std::shared_ptr<File>& key, HashMap& map);
         std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
 
