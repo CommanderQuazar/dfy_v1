@@ -53,3 +53,9 @@ inline bool Folder::chk_exist(const std::string &to_chk)
 	return content.find(std::make_shared<File>(to_chk)) != content.end();
 }
 
+//Return the end iter for the content member
+inline std::set<std::shared_ptr<File>>::iterator Folder::end()
+{
+	return content.end();
+}
+

@@ -30,6 +30,7 @@ class Folder
         std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
 
 		bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
+		std::set<std::shared_ptr<File>>::iterator end();
 
         std::string get_folder_name() const { return folder_name; };
         void print_files(std::ostream& out_s) const;
