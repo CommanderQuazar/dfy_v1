@@ -64,11 +64,7 @@ FileSystemManager &FileSystemManager::create_file()
 	//Gets the Folder to operate on
 	auto folder_iter = system_layout.second.find(f_name);
 
-	do
-	{
-		out << "\nEnter a file name: ";
-	}
-	while(std::cin >> fi_name && folder_iter->second.chk_exist(fi_name));
+	fi_name = get_file_name(IS_NEW, folder_iter);
 
 	out << "Enter the file contents: ";
 	std::cin >> content;
@@ -86,12 +82,18 @@ FileSystemManager &FileSystemManager::create_file()
 //Moves a file from one folder to another
 FileSystemManager &FileSystemManager::move_file()
 {
-	std::string fi_name, f_name;
+	std::string fi_name, f_name, move_folder;
 
+	//Gets a file to move from and to a folder from user
+	f_name = get_folder_name(IS_CURR);
+	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
+	move_folder = get_folder_name(IS_CURR);
+
+	if()
 
 }
 
-//Util function to get a valid folder name
+//Util function to get a valid folder name from user
 //0 - check if folder name is new
 //1 - check if folder name is current
 inline std::string FileSystemManager::get_folder_name(int MODE)
@@ -114,6 +116,31 @@ inline std::string FileSystemManager::get_folder_name(int MODE)
 	}
 	while(std::cin >> f_name && !(chk_folder_name(f_name) || MODE));    //TODO Change when in debug phase
 	return f_name;
+}
+
+//Util function to get a valid file name from user
+//0 - check if file name is new
+//1 - check if file name is current
+inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Folder>::iterator target_folder)
+{
+	std::string fi_name;
+	do
+	{
+		switch (MODE)
+		{
+			case 0:
+				out << "\nEnter a new file name: ";
+				break;
+			case 1:
+				out << "\nEnter a current current name: ";
+				break;
+			default:
+				out << "\nFile name capture failed ERROR 22";
+				break;
+		}
+	}
+	while(std::cin >> fi_name && !(target_folder->second.chk_exist(fi_name) || MODE));      //TODO Change when in debug phase
+	return fi_name;
 }
 
 

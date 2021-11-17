@@ -40,6 +40,7 @@ class FileSystemManager
         std::pair<HashMap *, std::map<std::string, Folder>> system_layout;
 		bool chk_folder_name(const std::string& posi_name);
 		std::string get_folder_name(int MODE);
+		std::string get_file_name(int MODE, std::map<std::string, Folder>::iterator);
 };
 
 
