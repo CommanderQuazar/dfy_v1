@@ -4,6 +4,7 @@
 
 #include "FileSystemManager.h"
 
+
 //Displays all folders in the file system
 FileSystemManager& FileSystemManager::display_all_folders()
 {
@@ -46,14 +47,10 @@ bool FileSystemManager::chk_folder_name(const std::string &posi_name)
 //Creates a new folder in system_layout
 FileSystemManager &FileSystemManager::create_folder()
 {
-    std::string f_name;
-	do
-	{
-		out << "\nEnter a folder's name: ";
-	}
-	while(std::cin >> f_name && chk_folder_name(f_name));
+    std::string f_name = get_folder_name(IS_NEW);
 
 	system_layout.second.insert(std::pair(f_name, Folder(f_name)));
+	return *this;
 }
 
 //Creates a new file
@@ -62,11 +59,7 @@ FileSystemManager &FileSystemManager::create_file()
 	std::string fi_name, f_name, content;
 	out << "Folders:" << std::endl;
 	display_all_folders();
-	do
-	{
-		out << "\nEnter a folder name: ";
-	}
-	while(std::cin >> f_name && chk_folder_name(f_name));
+	f_name = get_folder_name(IS_CURR);
 
 	//Gets the Folder to operate on
 	auto folder_iter = system_layout.second.find(f_name);
@@ -88,6 +81,39 @@ FileSystemManager &FileSystemManager::create_file()
 	folder_iter->second.add(to_add, *system_layout.first);
 
 	return *this;
+}
+
+//Moves a file from one folder to another
+FileSystemManager &FileSystemManager::move_file()
+{
+	std::string fi_name, f_name;
+
+
+}
+
+//Util function to get a valid folder name
+//0 - check if folder name is new
+//1 - check if folder name is current
+inline std::string FileSystemManager::get_folder_name(int MODE)
+{
+	std::string f_name;
+	do
+	{
+		switch (MODE)
+		{
+			case 0:
+				out << "\nEnter a new folder name: ";
+				break;
+			case 1:
+				out << "\nEnter a current folder name: ";
+				break;
+			default:
+				out << "\nFolder name capture failed ERROR 11";
+				break;
+		}
+	}
+	while(std::cin >> f_name && !(chk_folder_name(f_name) || MODE));    //TODO Change when in debug phase
+	return f_name;
 }
 
 

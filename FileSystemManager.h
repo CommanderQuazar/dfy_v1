@@ -12,6 +12,9 @@
 
 class FileSystemManager
 {
+	#define IS_NEW 0
+	#define IS_CURR 1
+
     public:
         //Constructors
         explicit FileSystemManager(std::ostream& out_stream) : out(out_stream) { };
@@ -27,7 +30,7 @@ class FileSystemManager
         FileSystemManager& create_file();
 
         //Movers
-        FileSystemManager& move_file() { };
+        FileSystemManager& move_file();
 
         //Deletes
         FileSystemManager& delete_file() { };
@@ -36,6 +39,7 @@ class FileSystemManager
         std::ostream& out;
         std::pair<HashMap *, std::map<std::string, Folder>> system_layout;
 		bool chk_folder_name(const std::string& posi_name);
+		std::string get_folder_name(int MODE);
 };
 
 
