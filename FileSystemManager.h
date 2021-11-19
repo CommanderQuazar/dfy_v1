@@ -31,6 +31,7 @@ class FileSystemManager
 
         //Movers
         FileSystemManager& move_file();
+		FileSystemManager& copy();
 
         //Deletes
         FileSystemManager& delete_file() { };
@@ -41,6 +42,8 @@ class FileSystemManager
 		bool chk_folder_name(const std::string& posi_name);
 		std::string get_folder_name(int MODE);
 		std::string get_file_name(int MODE, std::map<std::string, Folder>::iterator);
+		std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> get_target();
+
 };
 
 

@@ -5,6 +5,63 @@
 #include "FileSystemManager.h"
 
 
+//Util function to get a valid folder name from user
+//0 - check if folder name is new
+//1 - check if folder name is current
+inline std::string FileSystemManager::get_folder_name(int MODE)
+{
+	std::string f_name;
+	do
+	{
+		switch (MODE)
+		{
+			case 0:
+				out << "\nEnter a new folder name: ";
+				break;
+			case 1:
+				out << "\nEnter a current folder name: ";
+				break;
+			default:
+				out << "\nFolder name capture failed ERROR 11";
+				break;
+		}
+	}
+	while(std::cin >> f_name && !(chk_folder_name(f_name) || MODE));    //TODO Change when in debug phase
+	return f_name;
+}
+
+//Util function to get a valid file name from user
+//0 - check if file name is new
+//1 - check if file name is current
+inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Folder>::iterator target_folder)
+{
+	std::string fi_name;
+	do
+	{
+		switch (MODE)
+		{
+			case 0:
+				out << "\nEnter a new file name: ";
+				break;
+			case 1:
+				out << "\nEnter a current current name: ";
+				break;
+			default:
+				out << "\nFile name capture failed ERROR 22";
+				break;
+		}
+	}
+	while(std::cin >> fi_name && !(target_folder->second.chk_exist(fi_name) || MODE));      //TODO Change when in debug phase
+	return fi_name;
+}
+
+//Function checks if a folder name is taken
+bool FileSystemManager::chk_folder_name(const std::string &posi_name)
+{
+	auto ret = system_layout.second.find(posi_name);
+	return !(ret == system_layout.second.end());
+}
+
 //Displays all folders in the file system
 FileSystemManager& FileSystemManager::display_all_folders()
 {
@@ -35,13 +92,6 @@ FileSystemManager& FileSystemManager::display_all()
         x.second.print_files(out);
     }
     return *this;
-}
-
-//Function checks if a folder name is taken
-bool FileSystemManager::chk_folder_name(const std::string &posi_name)
-{
-	auto ret = system_layout.second.find(posi_name);
-	return !(ret == system_layout.second.end());
 }
 
 //Creates a new folder in system_layout
@@ -112,54 +162,48 @@ FileSystemManager &FileSystemManager::move_file()
 	return *this;
 }
 
-//Util function to get a valid folder name from user
-//0 - check if folder name is new
-//1 - check if folder name is current
-inline std::string FileSystemManager::get_folder_name(int MODE)
+//Creates a copy of a selected file in a folder
+FileSystemManager &FileSystemManager::copy()
 {
-	std::string f_name;
-	do
-	{
-		switch (MODE)
-		{
-			case 0:
-				out << "\nEnter a new folder name: ";
-				break;
-			case 1:
-				out << "\nEnter a current folder name: ";
-				break;
-			default:
-				out << "\nFolder name capture failed ERROR 11";
-				break;
-		}
-	}
-	while(std::cin >> f_name && !(chk_folder_name(f_name) || MODE));    //TODO Change when in debug phase
-	return f_name;
+	std::string fi_name, f_name, cf_name;
+
+	//Gets a file to move from and to a folder from user
+	f_name = get_folder_name(IS_CURR);
+	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
+	cf_name = get_folder_name(IS_CURR);
+
+	//Get the file to copy
+	auto root_folder = system_layout.second.find(f_name);
+	auto move_file = root_folder->second.search(fi_name, *system_layout.first);
+
+	//Get the folder to copy the file to
+	auto target_folder = system_layout.second.find(cf_name);
+
+	//Check weather the file is already in the selected target folder
+	if(target_folder->second.search(fi_name, *system_layout.first) != target_folder->second.end())
+		return *this;
 }
 
-//Util function to get a valid file name from user
-//0 - check if file name is new
-//1 - check if file name is current
-inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Folder>::iterator target_folder)
+//Private member function facilitates the capture of a file and a folder for
+//  Use among other public member functions
+std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target()
 {
-	std::string fi_name;
-	do
-	{
-		switch (MODE)
-		{
-			case 0:
-				out << "\nEnter a new file name: ";
-				break;
-			case 1:
-				out << "\nEnter a current current name: ";
-				break;
-			default:
-				out << "\nFile name capture failed ERROR 22";
-				break;
-		}
-	}
-	while(std::cin >> fi_name && !(target_folder->second.chk_exist(fi_name) || MODE));      //TODO Change when in debug phase
-	return fi_name;
+	std::string fi_name, f_name, cf_name;
+
+	//Gets a file to move from and to a folder from user
+	f_name = get_folder_name(IS_CURR);
+	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
+	cf_name = get_folder_name(IS_CURR);
+
+	//Get the file to copy
+	auto root_folder = system_layout.second.find(f_name);
+
+	//Get the folder to copy the file to
+	auto target_folder = system_layout.second.find(cf_name);
+
+	//First a folder to move the file to
+	//Second a shared_ptr iterator to a file to move
+	return {target_folder, *root_folder->second.search(fi_name, *system_layout.first)};
 }
 
 
