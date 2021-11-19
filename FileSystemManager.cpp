@@ -5,9 +5,11 @@
 #include "FileSystemManager.h"
 
 
-//Util function to get a valid folder name from user
-//0 - check if folder name is new
-//1 - check if folder name is current
+/*
+ * Util function to get a valid folder name from user
+ * 0 - check if folder name is new
+ * 1 - check if folder name is current
+ */
 inline std::string FileSystemManager::get_folder_name(int MODE)
 {
 	std::string f_name;
@@ -29,10 +31,11 @@ inline std::string FileSystemManager::get_folder_name(int MODE)
 	while(std::cin >> f_name && !(chk_folder_name(f_name) || MODE));    //TODO Change when in debug phase
 	return f_name;
 }
-
-//Util function to get a valid file name from user
-//0 - check if file name is new
-//1 - check if file name is current
+/*
+ * Util function to get a valid file name from user
+ * 0 - check if file name is new
+ * 1 - check if file name is current
+ */
 inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Folder>::iterator target_folder)
 {
 	std::string fi_name;
@@ -55,14 +58,18 @@ inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::stri
 	return fi_name;
 }
 
-//Function checks if a folder name is taken
+/*
+ * Function checks if a folder name is taken
+ */
 bool FileSystemManager::chk_folder_name(const std::string &posi_name)
 {
 	auto ret = system_layout.second.find(posi_name);
 	return !(ret == system_layout.second.end());
 }
 
-//Displays all folders in the file system
+/*
+ * Displays all folders in the file system
+ */
 FileSystemManager& FileSystemManager::display_all_folders()
 {
     out << "ALL FOLDERS:" << std::endl;
@@ -73,7 +80,9 @@ FileSystemManager& FileSystemManager::display_all_folders()
     return *this;
 }
 
-//Displays all files that exist in the file system
+/*
+ * Displays all files that exist in the file system
+ */
 FileSystemManager& FileSystemManager::display_all_files()
 {
     out << "ALL FILES IN SYSTEM:" << std::endl;
@@ -81,7 +90,9 @@ FileSystemManager& FileSystemManager::display_all_files()
     return *this;
 }
 
-//Displays all Folders and accosted files
+/*
+ * Displays all Folders and accosted files
+ */
 FileSystemManager& FileSystemManager::display_all()
 {
     out << "ALL FOLDERS AND FILES:" << std::endl;
@@ -94,7 +105,9 @@ FileSystemManager& FileSystemManager::display_all()
     return *this;
 }
 
-//Creates a new folder in system_layout
+/*
+ * Creates a new folder in system_layout
+ */
 FileSystemManager &FileSystemManager::create_folder()
 {
     std::string f_name = get_folder_name(IS_NEW);
@@ -103,7 +116,9 @@ FileSystemManager &FileSystemManager::create_folder()
 	return *this;
 }
 
-//Creates a new file
+/*
+ * Creates a new file
+ */
 FileSystemManager &FileSystemManager::create_file()
 {
 	std::string fi_name, f_name, content;
@@ -129,7 +144,9 @@ FileSystemManager &FileSystemManager::create_file()
 	return *this;
 }
 
-//Moves a file from one folder to another
+/*
+ * Moves a file from one folder to another
+ */
 FileSystemManager &FileSystemManager::move_file()
 {
 	std::string fi_name, f_name, mf_name;
@@ -162,7 +179,9 @@ FileSystemManager &FileSystemManager::move_file()
 	return *this;
 }
 
-//Creates a copy of a selected file in a folder
+/*
+ * Creates a copy of a selected file in a folder
+ */
 FileSystemManager &FileSystemManager::copy()
 {
 	std::string fi_name, f_name, cf_name;
@@ -184,8 +203,10 @@ FileSystemManager &FileSystemManager::copy()
 		return *this;
 }
 
-//Private member function facilitates the capture of a file and a folder for
-//  Use among other public member functions
+/*
+ * Private member function facilitates the capture of a file and a folder for
+ * Use among other public member functions
+ */
 std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target()
 {
 	std::string fi_name, f_name, cf_name;
