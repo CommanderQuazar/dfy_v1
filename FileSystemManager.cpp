@@ -149,33 +149,21 @@ FileSystemManager &FileSystemManager::create_file()
  */
 FileSystemManager &FileSystemManager::move_file()
 {
-	std::string fi_name, f_name, mf_name;
-
-	//Gets a file to move from and to a folder from user
-	f_name = get_folder_name(IS_CURR);
-	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
-	mf_name = get_folder_name(IS_CURR);
-
-	//Get the file to move
-	auto root_folder = system_layout.second.find(f_name);
-	auto move_file = root_folder->second.search(fi_name, *system_layout.first);
-
-	//Get the folder to move the file to
-	auto target_folder = system_layout.second.find(mf_name);
+	//Holds a iterator folder and a file ptr
+	auto target_data = get_target();
+	auto root_folder = system_layout.second.find(target_data.second->get_name())->second;
 
 	//Check weather the file is already in the selected target folder
-	if(target_folder->second.search(fi_name, *system_layout.first) != target_folder->second.end())
+	if(target_data.first->second.search(target_data.second->get_name(), *system_layout.first) != target_data.first->second.end())
 		return *this;
 
 	//Add and remove occurrence data for the file to be moved
-	move_file->get()->remove_occ(&root_folder->second);
-	move_file->get()->add_occ(&target_folder->second);
+	target_data.second->remove_occ(&root_folder);
+	target_data.second->add_occ(&target_data.first->second);
 
 	//Reassigns pointers in folders
-	target_folder->second.move(*move_file);
-	root_folder->second.remove(*move_file, *system_layout.first);
-
-
+	target_data.first->second.move(target_data.second);
+	root_folder.remove(target_data.second, *system_layout.first);
 	return *this;
 }
 
@@ -184,23 +172,20 @@ FileSystemManager &FileSystemManager::move_file()
  */
 FileSystemManager &FileSystemManager::copy()
 {
-	std::string fi_name, f_name, cf_name;
-
-	//Gets a file to move from and to a folder from user
-	f_name = get_folder_name(IS_CURR);
-	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
-	cf_name = get_folder_name(IS_CURR);
-
-	//Get the file to copy
-	auto root_folder = system_layout.second.find(f_name);
-	auto move_file = root_folder->second.search(fi_name, *system_layout.first);
-
-	//Get the folder to copy the file to
-	auto target_folder = system_layout.second.find(cf_name);
+	//Holds a iterator folder and a file ptr
+	auto target_data = get_target();
 
 	//Check weather the file is already in the selected target folder
-	if(target_folder->second.search(fi_name, *system_layout.first) != target_folder->second.end())
+	if(target_data.first->second.search(target_data.second->get_name(), *system_layout.first) != target_data.first->second.end())
 		return *this;
+
+	//Assign new occurrence
+	target_data.second->add_occ(&target_data.first->second);
+
+	//Add to folder
+	target_data.first->second.add(*target_data.second, *system_layout.first);
+
+	return *this;
 }
 
 /*
