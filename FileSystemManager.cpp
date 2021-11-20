@@ -222,6 +222,9 @@ FileSystemManager &FileSystemManager::delete_file()
 
 	//Gets a file to delete
 	auto target = get_target_double();
+
+	//Remove the folder occurrence from the file
+	target.second->remove_occ(&target.first->second);
 	target.first->second.remove(target.second, *system_layout.first);
 
 	return *this;
