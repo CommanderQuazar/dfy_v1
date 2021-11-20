@@ -24,8 +24,7 @@ inline std::string FileSystemManager::get_folder_name(int MODE)
 				out << "\nEnter a current folder name: ";
 				break;
 			default:
-				out << "\nFolder name capture failed ERROR 11";
-				break;
+				;   //No option
 		}
 	}
 	while(std::cin >> f_name && !(chk_folder_name(f_name) || MODE));    //TODO Change when in debug phase
@@ -50,8 +49,7 @@ inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::stri
 				out << "\nEnter a current current name: ";
 				break;
 			default:
-				out << "\nFile name capture failed ERROR 22";
-				break;
+				;   //No option
 		}
 	}
 	while(std::cin >> fi_name && !(target_folder->second.chk_exist(fi_name) || MODE));      //TODO Change when in debug phase
@@ -65,6 +63,30 @@ bool FileSystemManager::chk_folder_name(const std::string &posi_name)
 {
 	auto ret = system_layout.second.find(posi_name);
 	return !(ret == system_layout.second.end());
+}
+
+/*
+ * Private member function facilitates the capture of a file and a folder for
+ * Use among other public member functions
+ */
+std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_triple()
+{
+	std::string fi_name, f_name, cf_name;
+
+	//Gets a file to move from and to a folder from user
+	f_name = get_folder_name(IS_CURR);
+	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
+	cf_name = get_folder_name(IS_CURR);
+
+	//Get the file to copy
+	auto root_folder = system_layout.second.find(f_name);
+
+	//Get the folder to copy the file to
+	auto target_folder = system_layout.second.find(cf_name);
+
+	//First a folder to move the file to
+	//Second a shared_ptr iterator to a file to move
+	return {target_folder, *root_folder->second.search(fi_name, *system_layout.first)};
 }
 
 /*
@@ -150,7 +172,7 @@ FileSystemManager &FileSystemManager::create_file()
 FileSystemManager &FileSystemManager::move_file()
 {
 	//Holds a iterator folder and a file ptr
-	auto target_data = get_target();
+	auto target_data = get_target_triple();
 	auto root_folder = system_layout.second.find(target_data.second->get_name())->second;
 
 	//Check weather the file is already in the selected target folder
@@ -173,7 +195,7 @@ FileSystemManager &FileSystemManager::move_file()
 FileSystemManager &FileSystemManager::copy()
 {
 	//Holds a iterator folder and a file ptr
-	auto target_data = get_target();
+	auto target_data = get_target_triple();
 
 	//Check weather the file is already in the selected target folder
 	if(target_data.first->second.search(target_data.second->get_name(), *system_layout.first) != target_data.first->second.end())
@@ -189,27 +211,47 @@ FileSystemManager &FileSystemManager::copy()
 }
 
 /*
- * Private member function facilitates the capture of a file and a folder for
- * Use among other public member functions
+ * Removes a file from a user specified folder.
+ * If a files is removed from a folder, and it
+ * is the last occurrence in the file system
+ * we will remove it from the HashMap
  */
-std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target()
+FileSystemManager &FileSystemManager::delete_file()
 {
-	std::string fi_name, f_name, cf_name;
+	std::string fi_name, f_name;
+
+	//Gets a file to delete
+	auto target = get_target_double();
+	target.first->second.remove(target.second, *system_layout.first);
+
+	return *this;
+}
+
+/*
+ * This deletes a folder from the file system.
+ * Removes all occurrences from the respective files
+ * then deconstructs it.
+ * Same principle of file removal is applied here just as in
+ * the delete_file function
+ */
+FileSystemManager &FileSystemManager::delete_folder()
+{
+
+}
+
+std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_double()
+{
+	std::string fi_name, f_name;
 
 	//Gets a file to move from and to a folder from user
 	f_name = get_folder_name(IS_CURR);
 	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
-	cf_name = get_folder_name(IS_CURR);
 
 	//Get the file to copy
 	auto root_folder = system_layout.second.find(f_name);
 
-	//Get the folder to copy the file to
-	auto target_folder = system_layout.second.find(cf_name);
-
 	//First a folder to move the file to
 	//Second a shared_ptr iterator to a file to move
-	return {target_folder, *root_folder->second.search(fi_name, *system_layout.first)};
+	return {root_folder, *root_folder->second.search(fi_name, *system_layout.first)};
 }
-
 
