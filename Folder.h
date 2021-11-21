@@ -28,9 +28,11 @@ class Folder
         Folder& add(File& file, HashMap& map);
 		Folder& move(const std::shared_ptr<File>& m_file);
         Folder& remove(const std::shared_ptr<File>& key, HashMap& map);
+		Folder& clear_files(HashMap& map);
         std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
 
 		bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
+
 		std::set<std::shared_ptr<File>>::iterator end();
 
         std::string get_folder_name() const { return folder_name; };

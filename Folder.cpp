@@ -88,3 +88,23 @@ inline void Folder::print_files(std::ostream& out_s) const
         out_s << "\t" << x->get_name() << std::endl;
 }
 
+/*
+ * Function clears all files stored in content
+ */
+Folder &Folder::clear_files(HashMap& map)
+{
+	for(const auto& x : content)
+	{
+		//Remove the occurrence in the file
+		x->remove_occ(this);
+
+		//Erase the data from the content
+		content.erase(x);
+
+		//Check is the file should be removed from the HashMap
+		if(x.use_count() == 1)
+			map.remove(x->get_name());
+		return *this;
+	}
+}
+
