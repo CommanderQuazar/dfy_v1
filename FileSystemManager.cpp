@@ -239,7 +239,16 @@ FileSystemManager &FileSystemManager::delete_file()
  */
 FileSystemManager &FileSystemManager::delete_folder()
 {
+	//Get a folder to delete
+	std::string f_name = get_folder_name(IS_CURR);
+	auto root_folder = system_layout.second.find(f_name);
 
+	//Remove all folder occurrences from stored files the remove them
+	root_folder->second.clear_files(*system_layout.first);
+
+	//Deconstruct the folder and remove it from the system_format
+	system_layout.second.erase(f_name);
+	root_folder->second.~Folder();
 }
 
 std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_double()
