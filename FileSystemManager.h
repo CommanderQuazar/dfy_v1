@@ -5,8 +5,8 @@
 #ifndef DFY_V1_FILESYSTEMMANAGER_H
 #define DFY_V1_FILESYSTEMMANAGER_H
 
-#include <iostream>
 #include <map>
+#include "File.h"
 #include "Folder.h"
 #include "HashMap.h"
 

@@ -4,7 +4,6 @@
 
 #include "FileSystemManager.h"
 
-
 /*
  * Util function to get a valid folder name from user
  * 0 - check if folder name is new
@@ -64,6 +63,23 @@ bool FileSystemManager::chk_folder_name(const std::string &posi_name)
 	auto ret = system_layout.second.find(posi_name);
 	return !(ret == system_layout.second.end());
 }
+
+std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_double()
+{
+	std::string fi_name, f_name;
+
+	//Gets a file to move from and to a folder from user
+	f_name = get_folder_name(IS_CURR);
+	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
+
+	//Get the file to copy
+	auto root_folder = system_layout.second.find(f_name);
+
+	//First a folder to move the file to
+	//Second a shared_ptr iterator to a file to move
+	return {root_folder, *root_folder->second.search(fi_name, *system_layout.first)};
+}
+
 
 /*
  * Private member function facilitates the capture of a file and a folder for
@@ -246,24 +262,10 @@ FileSystemManager &FileSystemManager::delete_folder()
 	//Remove all folder occurrences from stored files the remove them
 	root_folder->second.clear_files(*system_layout.first);
 
-	//Deconstruct the folder and remove it from the system_format
+	//Deconstruct the folder and re0move it from the system_format
 	system_layout.second.erase(f_name);
 	root_folder->second.~Folder();
-}
 
-std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_double()
-{
-	std::string fi_name, f_name;
-
-	//Gets a file to move from and to a folder from user
-	f_name = get_folder_name(IS_CURR);
-	fi_name = get_file_name(IS_CURR, system_layout.second.find(f_name));
-
-	//Get the file to copy
-	auto root_folder = system_layout.second.find(f_name);
-
-	//First a folder to move the file to
-	//Second a shared_ptr iterator to a file to move
-	return {root_folder, *root_folder->second.search(fi_name, *system_layout.first)};
+	return *this;
 }
 

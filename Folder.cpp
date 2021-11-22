@@ -104,7 +104,7 @@ Folder &Folder::clear_files(HashMap& map)
 		//Check is the file should be removed from the HashMap
 		if(x.use_count() == 1)
 			map.remove(x->get_name());
-		return *this;
 	}
+	return *this;
 }
 

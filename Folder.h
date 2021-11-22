@@ -5,7 +5,6 @@
 #ifndef DFY_V1_FOLDER_H
 #define DFY_V1_FOLDER_H
 
-#include <iostream>
 #include <set>
 #include <utility>
 #include "File.h"
@@ -31,13 +30,12 @@ class Folder
 		Folder& clear_files(HashMap& map);
         std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
 
-		bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
-
 		std::set<std::shared_ptr<File>>::iterator end();
-
-        std::string get_folder_name() const { return folder_name; };
-        void print_files(std::ostream& out_s) const;
+		std::string get_folder_name() const { return folder_name; };
+		void print_files(std::ostream& out_s) const;
 		bool chk_exist(const std::string& to_chk);
+
+		bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
 
     private:
         std::string folder_name;
