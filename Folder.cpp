@@ -7,7 +7,7 @@
 /*
  * Checks if a file exists under the folder
  */
-inline bool Folder::chk_exist(const std::string &to_chk)
+bool Folder::chk_exist(const std::string &to_chk)
 {
 	return content.find(std::make_shared<File>(to_chk)) != content.end();
 }
@@ -15,7 +15,7 @@ inline bool Folder::chk_exist(const std::string &to_chk)
 /*
  * Return the end iter for the content member
  */
-inline std::set<std::shared_ptr<File>>::iterator Folder::end()
+std::set<std::shared_ptr<File>>::iterator Folder::end()
 {
 	return content.end();
 }
@@ -82,7 +82,7 @@ std::set<std::shared_ptr<File>>::iterator Folder::search(std::string &term, Hash
 /*
  * Print the contents of all files appearing in the folder
  */
-inline void Folder::print_files(std::ostream& out_s) const
+void Folder::print_files(std::ostream& out_s) const
 {
     for(const auto& x : content)
         out_s << "\t" << x->get_name() << std::endl;
