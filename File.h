@@ -7,11 +7,12 @@
 
 #include <iostream>
 #include <set>
-
 class Folder;
 class File
 {
-    public:
+
+	public:
+
 		explicit File(std::string name, std::string init_msg = "") : msg(std::move(init_msg)), file_name(std::move(name)) { };
         File(std::string name, std::string init_msg, Folder * add_folder) : msg(std::move(init_msg)), file_name(std::move(name)) { occurrences.insert(add_folder); };
         File(std::string name, std::string init_msg, std::initializer_list<Folder*> to_add_f) : msg(std::move(init_msg)), file_name(std::move(name))
