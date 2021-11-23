@@ -51,7 +51,7 @@ inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::stri
 				;   //No option
 		}
 	}
-	while(std::cin >> fi_name && !(target_folder->second.chk_exist(fi_name) || MODE));      //TODO Change when in debug phase
+	while(std::cin >> fi_name && (target_folder->second.chk_exist(fi_name) && MODE));      //TODO Change when in debug phase
 	return fi_name;
 }
 
@@ -61,7 +61,7 @@ inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::stri
 bool FileSystemManager::chk_folder_name(const std::string &posi_name)
 {
 	auto ret = system_layout.second.find(posi_name);
-	return !(ret == system_layout.second.end());
+	return ret == system_layout.second.end();
 }
 
 std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_double()
