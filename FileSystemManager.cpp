@@ -5,6 +5,20 @@
 #include "FileSystemManager.h"
 
 /*
+ * Clear logic for MacOS/Unix and Win10
+ */
+void FileSystemManager::clearScreen()
+{
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+	system("clear");
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+	system("cls");
+#endif
+}
+
+/*
  * Util function to get a valid folder name from user
  * 0 - check if folder name is new
  * 1 - check if folder name is current
@@ -159,6 +173,13 @@ FileSystemManager &FileSystemManager::create_folder()
  */
 FileSystemManager &FileSystemManager::create_file()
 {
+	//Check if folders exist in the system
+	if(system_layout.second.empty())
+	{
+		std::cout << "No available folders" << std::endl;
+		sleep(2);
+		return *this;
+	}
 	std::string fi_name, f_name, content;
 	out << "Folders:" << std::endl;
 	display_all_folders();

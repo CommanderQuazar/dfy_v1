@@ -8,7 +8,10 @@
 #include <map>
 #include "HashMap.h"
 #include "Folder.h"
+#include "unistd.h"
 
+#define LIMIT 4
+typedef std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> target_t;
 
 class FileSystemManager
 {
@@ -21,7 +24,7 @@ class FileSystemManager
         FileSystemManager(HashMap * table, std::map<std::string, Folder>& dir, std::ostream& out_stream) :
                             system_layout({table, dir}), out(out_stream) { };
         //Display
-        FileSystemManager& display_all_folders() ;
+        FileSystemManager& display_all_folders();
         FileSystemManager& display_all_files();
         FileSystemManager& display_all();
 
@@ -38,13 +41,13 @@ class FileSystemManager
         FileSystemManager& delete_folder();
     private:
         std::ostream& out;
-        std::pair<HashMap *, std::map<std::string, Folder>> system_layout;
-		bool chk_folder_name(const std::string& posi_name);
+		std::pair<HashMap *, std::map<std::string, Folder>> system_layout;
+		static inline void clearScreen();
 		std::string get_folder_name(int MODE);
+		bool chk_folder_name(const std::string& posi_name);
 		std::string get_file_name(int MODE, std::map<std::string, Folder>::iterator);
-		std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> get_target_triple();
-		std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> get_target_double();
-
+		target_t get_target_triple();
+		target_t get_target_double();
 };
 
 
