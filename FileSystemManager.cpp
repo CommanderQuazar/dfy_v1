@@ -23,7 +23,7 @@ void FileSystemManager::clearScreen()
  * 0 - check if folder name is new
  * 1 - check if folder name is current
  */
-inline std::string FileSystemManager::get_folder_name(int MODE)
+std::string FileSystemManager::get_folder_name(int MODE)
 {
 	std::string f_name;
 	do
@@ -40,7 +40,7 @@ inline std::string FileSystemManager::get_folder_name(int MODE)
 				;   //No option
 		}
 	}
-	while(std::cin >> f_name && !(chk_folder_name(f_name) || MODE));    //TODO Change when in debug phase
+	while(std::cin >> f_name && chk_folder_name(f_name) != MODE);
 	return f_name;
 }
 /*
@@ -48,7 +48,7 @@ inline std::string FileSystemManager::get_folder_name(int MODE)
  * 0 - check if file name is new
  * 1 - check if file name is current
  */
-inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Folder>::iterator target_folder)
+std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Folder>::iterator target_folder)
 {
 	std::string fi_name;
 	do
@@ -59,23 +59,23 @@ inline std::string FileSystemManager::get_file_name(int MODE, std::map<std::stri
 				out << "\nEnter a new file name: ";
 				break;
 			case 1:
-				out << "\nEnter a current current name: ";
+				out << "\nEnter a current file name: ";
 				break;
 			default:
 				;   //No option
 		}
 	}
-	while(std::cin >> fi_name && (target_folder->second.chk_exist(fi_name) && MODE));      //TODO Change when in debug phase
+	while(std::cin >> fi_name && target_folder->second.chk_exist(fi_name) != MODE);
 	return fi_name;
 }
 
 /*
- * Function checks if a folder name is taken
+ * Function checks if a folder name is taken DON'T CHANGE
  */
 bool FileSystemManager::chk_folder_name(const std::string &posi_name)
 {
 	auto ret = system_layout.second.find(posi_name);
-	return ret == system_layout.second.end();
+	return ret != system_layout.second.end();
 }
 
 std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_double()
@@ -181,7 +181,6 @@ FileSystemManager &FileSystemManager::create_file()
 		return *this;
 	}
 	std::string fi_name, f_name, content;
-	out << "Folders:" << std::endl;
 	display_all_folders();
 	f_name = get_folder_name(IS_CURR);
 
@@ -213,7 +212,7 @@ FileSystemManager &FileSystemManager::move_file()
 	auto root_folder = system_layout.second.find(target_data.second->get_name())->second;
 
 	//Check weather the file is already in the selected target folder
-	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) != target_data.first->second.end())
+	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) == target_data.first->second.end())
 		return *this;
 
 	//Add and remove occurrence data for the file to be moved
@@ -235,7 +234,7 @@ FileSystemManager &FileSystemManager::copy()
 	auto target_data = get_target_triple();
 
 	//Check weather the file is already in the selected target folder
-	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) != target_data.first->second.end())
+	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) == target_data.first->second.end())
 		return *this;
 
 	//Assign new occurrence
@@ -255,8 +254,6 @@ FileSystemManager &FileSystemManager::copy()
  */
 FileSystemManager &FileSystemManager::delete_file()
 {
-	std::string fi_name, f_name;
-
 	//Gets a file to delete
 	auto target = get_target_double();
 

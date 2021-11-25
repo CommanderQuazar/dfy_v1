@@ -21,7 +21,7 @@ class FileSystemManager
     public:
         //Constructors
         explicit FileSystemManager(std::ostream& out_stream) : out(out_stream) { };
-        FileSystemManager(HashMap table, std::map<std::string, Folder>& dir, std::ostream& out_stream) :
+        FileSystemManager(const HashMap& table, std::map<std::string, Folder>& dir, std::ostream& out_stream) :
                             system_layout({table, dir}), out(out_stream) { };
         //Display
         FileSystemManager& display_all_folders();
