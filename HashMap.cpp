@@ -24,7 +24,7 @@ HashMap& HashMap::remove(const std::string& name)
 std::shared_ptr<File> HashMap::add(const std::string& name, File &to_add)
 {
     auto file_ptr = std::make_shared<File>(to_add);
-    hash_set.insert({name, file_ptr});
+    hash_set.try_emplace(name, file_ptr);
     return file_ptr;
 }
 

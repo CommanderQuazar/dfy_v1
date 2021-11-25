@@ -14,7 +14,7 @@ unsigned int get_ans(size_t range)
 	{
 		int user_ans;
 		std::cin >> user_ans;
-		if(user_ans <= range && user_ans <= 0)
+		if(user_ans <= range && user_ans >= 0)
 			return user_ans;
 		else
 		{

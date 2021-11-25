@@ -8,7 +8,7 @@
 #include "File.h"
 #include <unordered_map>
 
-using hash_set_type = std::unordered_map<std::string, std::shared_ptr<File>>;
+using hash_set_t = std::unordered_map<std::string, std::shared_ptr<File>>;
 
 class HashMap
 {
@@ -22,7 +22,7 @@ class HashMap
         HashMap& print_all();
 
     private:
-        hash_set_type hash_set;
+        hash_set_t hash_set;
 };
 
 

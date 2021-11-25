@@ -21,7 +21,7 @@ class FileSystemManager
     public:
         //Constructors
         explicit FileSystemManager(std::ostream& out_stream) : out(out_stream) { };
-        FileSystemManager(HashMap * table, std::map<std::string, Folder>& dir, std::ostream& out_stream) :
+        FileSystemManager(HashMap table, std::map<std::string, Folder>& dir, std::ostream& out_stream) :
                             system_layout({table, dir}), out(out_stream) { };
         //Display
         FileSystemManager& display_all_folders();
@@ -41,7 +41,7 @@ class FileSystemManager
         FileSystemManager& delete_folder();
     private:
         std::ostream& out;
-		std::pair<HashMap *, std::map<std::string, Folder>> system_layout;
+		std::pair<HashMap, std::map<std::string, Folder>> system_layout;
 		static inline void clearScreen();
 		std::string get_folder_name(int MODE);
 		bool chk_folder_name(const std::string& posi_name);

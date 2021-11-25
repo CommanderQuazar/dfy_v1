@@ -91,7 +91,7 @@ std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSy
 
 	//First a folder to move the file to
 	//Second a shared_ptr iterator to a file to move
-	return {root_folder, *root_folder->second.search(fi_name, *system_layout.first)};
+	return {root_folder, *root_folder->second.search(fi_name, system_layout.first)};
 }
 
 
@@ -116,7 +116,7 @@ std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSy
 
 	//First a folder to move the file to
 	//Second a shared_ptr iterator to a file to move
-	return {target_folder, *root_folder->second.search(fi_name, *system_layout.first)};
+	return {target_folder, *root_folder->second.search(fi_name, system_layout.first)};
 }
 
 /*
@@ -138,7 +138,7 @@ FileSystemManager& FileSystemManager::display_all_folders()
 FileSystemManager& FileSystemManager::display_all_files()
 {
     out << "ALL FILES IN SYSTEM:" << std::endl;
-    system_layout.first->print_all();
+    system_layout.first.print_all();
     return *this;
 }
 
@@ -195,10 +195,10 @@ FileSystemManager &FileSystemManager::create_file()
 	File to_add(fi_name, content, &folder_iter->second);
 
 	//Add to hashmap
-	system_layout.first->add(fi_name, to_add);
+	system_layout.first.add(fi_name, to_add);
 
 	//Add to folder
-	folder_iter->second.add(to_add, *system_layout.first);
+	folder_iter->second.add(to_add, system_layout.first);
 
 	return *this;
 }
@@ -213,7 +213,7 @@ FileSystemManager &FileSystemManager::move_file()
 	auto root_folder = system_layout.second.find(target_data.second->get_name())->second;
 
 	//Check weather the file is already in the selected target folder
-	if(target_data.first->second.search(target_data.second->get_name(), *system_layout.first) != target_data.first->second.end())
+	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) != target_data.first->second.end())
 		return *this;
 
 	//Add and remove occurrence data for the file to be moved
@@ -222,7 +222,7 @@ FileSystemManager &FileSystemManager::move_file()
 
 	//Reassigns pointers in folders
 	target_data.first->second.move(target_data.second);
-	root_folder.remove(target_data.second, *system_layout.first);
+	root_folder.remove(target_data.second, system_layout.first);
 	return *this;
 }
 
@@ -235,14 +235,14 @@ FileSystemManager &FileSystemManager::copy()
 	auto target_data = get_target_triple();
 
 	//Check weather the file is already in the selected target folder
-	if(target_data.first->second.search(target_data.second->get_name(), *system_layout.first) != target_data.first->second.end())
+	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) != target_data.first->second.end())
 		return *this;
 
 	//Assign new occurrence
 	target_data.second->add_occ(&target_data.first->second);
 
 	//Add to folder
-	target_data.first->second.add(*target_data.second, *system_layout.first);
+	target_data.first->second.add(*target_data.second, system_layout.first);
 
 	return *this;
 }
@@ -262,7 +262,7 @@ FileSystemManager &FileSystemManager::delete_file()
 
 	//Remove the folder occurrence from the file
 	target.second->remove_occ(&target.first->second);
-	target.first->second.remove(target.second, *system_layout.first);
+	target.first->second.remove(target.second, system_layout.first);
 
 	return *this;
 }
@@ -281,7 +281,7 @@ FileSystemManager &FileSystemManager::delete_folder()
 	auto root_folder = system_layout.second.find(f_name);
 
 	//Remove all folder occurrences from stored files the remove them
-	root_folder->second.clear_files(*system_layout.first);
+	root_folder->second.clear_files(system_layout.first);
 
 	//Deconstruct the folder and re0move it from the system_format
 	system_layout.second.erase(f_name);
