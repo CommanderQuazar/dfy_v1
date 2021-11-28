@@ -15,7 +15,6 @@ struct triple_type
 	std::map<std::string, Folder>::iterator target;
 	std::shared_ptr<File> action_file;
 	std::map<std::string, Folder>::iterator root;
-
 };
 
 struct double_type
@@ -59,6 +58,7 @@ class FileSystemManager
 		static inline void clearScreen();
 		std::string get_folder_name(int MODE);
 		bool chk_folder_name(const std::string& posi_name);
+		bool is_empty() const;
 		std::string get_file_name(int MODE, std::map<std::string, Folder>::iterator);
 
 		struct triple_type get_target_triple();

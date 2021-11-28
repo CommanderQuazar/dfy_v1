@@ -19,6 +19,20 @@ void FileSystemManager::clearScreen()
 }
 
 /*
+ * Checks weather folders exist in the system
+ */
+bool FileSystemManager::is_empty() const
+{
+	if(system_layout.second.empty())
+	{
+		std::cerr << "\nNo folders in system" << std::endl;
+		return true;
+	}
+	else
+		return false;
+}
+
+/*
  * Util function to get a valid folder name from user
  * 0 - check if folder name is new
  * 1 - check if folder name is current
@@ -26,6 +40,7 @@ void FileSystemManager::clearScreen()
 std::string FileSystemManager::get_folder_name(int MODE)
 {
 	std::string f_name;
+
 	do
 	{
 		switch (MODE)
@@ -170,6 +185,10 @@ FileSystemManager &FileSystemManager::create_folder()
  */
 FileSystemManager &FileSystemManager::create_file()
 {
+	//Check for folders
+	if(is_empty())
+		return *this;
+
 	//Check if folders exist in the system
 	if(system_layout.second.empty())
 	{
@@ -204,6 +223,10 @@ FileSystemManager &FileSystemManager::create_file()
  */
 FileSystemManager &FileSystemManager::move_file()
 {
+	//Check for folders
+	if(is_empty())
+		return *this;
+
 	//Holds a iterator folder and a file ptr
 	auto user_data = get_target_triple();
 
@@ -221,6 +244,9 @@ FileSystemManager &FileSystemManager::move_file()
  */
 FileSystemManager &FileSystemManager::copy()
 {
+	//Check for folders
+	if(is_empty())
+		return *this;
 	//Holds a iterator folder and a file ptr
 	auto user_data = get_target_triple();
 
@@ -263,6 +289,10 @@ FileSystemManager &FileSystemManager::delete_file()
  */
 FileSystemManager &FileSystemManager::delete_folder()
 {
+	//Check for folders
+	if(is_empty())
+		return *this;
+
 	//Get a folder to delete
 	std::string f_name = get_folder_name(IS_CURR);
 	auto root_folder = system_layout.second.find(f_name);
@@ -276,4 +306,5 @@ FileSystemManager &FileSystemManager::delete_folder()
 
 	return *this;
 }
+
 
