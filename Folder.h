@@ -11,7 +11,7 @@
 
 typedef std::shared_ptr<File> file_ptr_t;
 
-//Compare class used to find values in Folder content member
+//Compare class used to find values in Folder content member (Callable class)
 struct Compare
 {
 	bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
@@ -21,20 +21,22 @@ class Folder
 {
     public:
         Folder() = default;
-        explicit Folder(std::string  f_name) : folder_name(std::move(f_name)) { };
+        explicit Folder(std::string f_name) : folder_name(std::move(f_name)) { };
+		//Folder(const Folder& copy) : folder_name(copy.get_folder_name()), content(copy.get_content()){ };
 
         Folder& add(File& file, HashMap& map);
-		Folder& move(const std::shared_ptr<File>& m_file);
-        Folder& remove(const std::shared_ptr<File>& key, HashMap& map);
+		Folder& move(const file_ptr_t& m_file, Folder * root_f);
+        Folder& remove(const file_ptr_t& key, HashMap& map);
 		Folder& clear_files(HashMap& map);
-        std::set<std::shared_ptr<File>>::iterator search(std::string& term, HashMap& map);
+
+        std::set<file_ptr_t>::iterator search(std::string& term, HashMap& map);
 
 		std::string get_folder_name() const { return folder_name; };
-		std::set<std::shared_ptr<File>>::iterator end();
+
+		std::set<file_ptr_t>::iterator end();
 		void print_files(std::ostream& out_s) const;
 		bool chk_exist(const std::string& to_chk);
 
-		bool operator() (const file_ptr_t& a, const file_ptr_t& b) const { return (a->get_name() != b->get_name()); }
 
     private:
         std::string folder_name;

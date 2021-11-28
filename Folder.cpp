@@ -15,7 +15,7 @@ bool Folder::chk_exist(const std::string &to_chk)
 /*
  * Return the end iter for the content member
  */
-std::set<std::shared_ptr<File>>::iterator Folder::end()
+std::set<file_ptr_t>::iterator Folder::end()
 {
 	return content.end();
 }
@@ -32,16 +32,19 @@ Folder& Folder::add(File &file, HashMap& map)
     file.add_occ(this);
 
     //Add a ptr to content that points to the file in the hash map
+	std::cout << location.get() << std::endl;
     content.insert(location);
+
     return *this;
 }
 
 /*
  * Member function moves a EXISTING file into its contents
  */
-Folder &Folder::move(const std::shared_ptr<File>& m_file)
+Folder &Folder::move(const file_ptr_t& m_file, Folder * root_f)
 {
-	//Adds occurrence to the File obj
+	//Adds and remove occurrence to the File obj
+	m_file->remove_occ(root_f);
 	m_file->add_occ(this);
 
 	//Add a ptr to content that points to the file in the hash map
@@ -54,11 +57,18 @@ Folder &Folder::move(const std::shared_ptr<File>& m_file)
  * If the file being removed has no other occurrences in the file system
  * remove it from the HashMap
  */
-Folder &Folder::remove(const std::shared_ptr<File>& key, HashMap& map)
+Folder &Folder::remove(const file_ptr_t& key, HashMap& map)
 {
     //Remove the file from the folder's content
+	std::cout << key.get() << std::endl;
+	if(content.contains(key))
+		std::cout << "POS" << std::endl;
+	else
+		std::cout << "NEG" << std::endl;
+
     content.erase(key);
 
+	//TODO More than one file name possible
     if(key.use_count() == 1)
         map.remove(key->get_name());
     return *this;
@@ -69,7 +79,7 @@ Folder &Folder::remove(const std::shared_ptr<File>& key, HashMap& map)
  * Accesses the HashMap lookup function to check weather the file exists
  * Returns an iter to the element if found
  */
-std::set<std::shared_ptr<File>>::iterator Folder::search(std::string &term, HashMap& map)
+std::set<file_ptr_t>::iterator Folder::search(std::string& term, HashMap& map)
 {
     auto ret = map.lookup(term);
     auto iter_hit = content.find(ret.second);

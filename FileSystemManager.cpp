@@ -78,7 +78,8 @@ bool FileSystemManager::chk_folder_name(const std::string &posi_name)
 	return ret != system_layout.second.end();
 }
 
-std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_double()
+
+struct double_type FileSystemManager::get_target_double()
 {
 	std::string fi_name, f_name;
 
@@ -88,18 +89,14 @@ std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSy
 
 	//Get the file to copy
 	auto root_folder = system_layout.second.find(f_name);
-
-	//First a folder to move the file to
-	//Second a shared_ptr iterator to a file to move
 	return {root_folder, *root_folder->second.search(fi_name, system_layout.first)};
 }
-
 
 /*
  * Private member function facilitates the capture of a file and a folder for
  * Use among other public member functions
  */
-std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSystemManager::get_target_triple()
+struct triple_type FileSystemManager::get_target_triple()
 {
 	std::string fi_name, f_name, cf_name;
 
@@ -116,7 +113,7 @@ std::pair<std::map<std::string, Folder>::iterator, std::shared_ptr<File>> FileSy
 
 	//First a folder to move the file to
 	//Second a shared_ptr iterator to a file to move
-	return {target_folder, *root_folder->second.search(fi_name, system_layout.first)};
+	return {target_folder, *root_folder->second.search(fi_name, system_layout.first), root_folder};
 }
 
 /*
@@ -208,41 +205,34 @@ FileSystemManager &FileSystemManager::create_file()
 FileSystemManager &FileSystemManager::move_file()
 {
 	//Holds a iterator folder and a file ptr
-	auto target_data = get_target_triple();
-	auto root_folder = system_layout.second.find(target_data.second->get_name())->second;
+	auto user_data = get_target_triple();
 
 	//Check weather the file is already in the selected target folder
-	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) == target_data.first->second.end())
+	if(user_data.target->second.chk_exist(user_data.action_file->get_name()))
 		return *this;
 
-	//Add and remove occurrence data for the file to be moved
-	target_data.second->remove_occ(&root_folder);
-	target_data.second->add_occ(&target_data.first->second);
-
 	//Reassigns pointers in folders
-	target_data.first->second.move(target_data.second);
-	root_folder.remove(target_data.second, system_layout.first);
+	user_data.root->second.remove(user_data.action_file, system_layout.first);
+	user_data.target->second.move(user_data.action_file, &user_data.root->second);
 	return *this;
 }
-
 /*
  * Creates a copy of a selected file in a folder
  */
 FileSystemManager &FileSystemManager::copy()
 {
 	//Holds a iterator folder and a file ptr
-	auto target_data = get_target_triple();
+	auto user_data = get_target_triple();
 
 	//Check weather the file is already in the selected target folder
-	if(target_data.first->second.search(target_data.second->get_name(), system_layout.first) == target_data.first->second.end())
+	if(user_data.target->second.chk_exist(user_data.action_file->get_name()))
 		return *this;
 
 	//Assign new occurrence
-	target_data.second->add_occ(&target_data.first->second);
+	user_data.action_file->add_occ(&user_data.target->second);
 
 	//Add to folder
-	target_data.first->second.add(*target_data.second, system_layout.first);
-
+	user_data.target->second.add(*user_data.action_file, system_layout.first);
 	return *this;
 }
 
@@ -255,11 +245,11 @@ FileSystemManager &FileSystemManager::copy()
 FileSystemManager &FileSystemManager::delete_file()
 {
 	//Gets a file to delete
-	auto target = get_target_double();
+	auto user_data = get_target_double();
 
 	//Remove the folder occurrence from the file
-	target.second->remove_occ(&target.first->second);
-	target.first->second.remove(target.second, system_layout.first);
+	user_data.action_file->remove_occ(&user_data.target->second);
+	user_data.target->second.remove(user_data.action_file, system_layout.first);
 
 	return *this;
 }
