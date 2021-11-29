@@ -50,6 +50,7 @@ class FileSystemManager
 		//Deletes
 		FileSystemManager& delete_file();
 		FileSystemManager& delete_folder();
+		size_t get_counter() const { return system_layout.first.get_count(); }
 
 
     private:
@@ -60,7 +61,6 @@ class FileSystemManager
 		bool chk_folder_name(const std::string& posi_name);
 		bool is_empty() const;
 		std::string get_file_name(int MODE, std::map<std::string, Folder>::iterator);
-
 		struct triple_type get_target_triple();
 		struct double_type get_target_double();
 

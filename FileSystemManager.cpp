@@ -226,7 +226,6 @@ FileSystemManager &FileSystemManager::move_file()
 	//Check for folders
 	if(is_empty())
 		return *this;
-
 	//Holds a iterator folder and a file ptr
 	auto user_data = get_target_triple();
 
@@ -235,8 +234,8 @@ FileSystemManager &FileSystemManager::move_file()
 		return *this;
 
 	//Reassigns pointers in folders
-	user_data.root->second.remove(user_data.action_file, system_layout.first);
 	user_data.target->second.move(user_data.action_file, &user_data.root->second);
+	user_data.root->second.remove(user_data.action_file, system_layout.first);
 	return *this;
 }
 /*

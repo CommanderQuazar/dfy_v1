@@ -20,6 +20,7 @@ class HashMap
         HashMap& remove(const std::string& name);
         std::pair<size_t, std::shared_ptr<File>> lookup(const std::string& lookup_msg);
         HashMap& print_all();
+		size_t get_count() const { return hash_set.size(); };
 
     private:
         hash_set_t hash_set;

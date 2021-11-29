@@ -59,14 +59,7 @@ Folder &Folder::move(const file_ptr_t& m_file, Folder * root_f)
  */
 Folder &Folder::remove(const file_ptr_t& key, HashMap& map)
 {
-    //Remove the file from the folder's content
-	std::cout << key.get() << std::endl;
-	if(content.contains(key))
-		std::cout << "POS" << std::endl;
-	else
-		std::cout << "NEG" << std::endl;
-
-    content.erase(key);
+	content.erase(key);
 
 	//TODO More than one file name possible
     if(key.use_count() == 1)
