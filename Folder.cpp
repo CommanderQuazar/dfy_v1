@@ -32,7 +32,6 @@ Folder& Folder::add(File &file, HashMap& map)
     file.add_occ(this);
 
     //Add a ptr to content that points to the file in the hash map
-	std::cout << location.get() << std::endl;
     content.insert(location);
 
     return *this;
