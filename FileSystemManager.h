@@ -10,6 +10,12 @@
 #include "Folder.h"
 #include "unistd.h"
 
+/*
+ * Target - the folder which to act on
+ * action file - the file that will be acted on
+ * root - the folder from which the action file originates from
+ */
+
 struct triple_type
 {
 	std::map<std::string, Folder>::iterator target;

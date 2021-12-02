@@ -95,8 +95,10 @@ void Folder::print_files(std::ostream& out_s) const
  */
 Folder &Folder::clear_files(HashMap& map)
 {
-	for(const auto& x : content)
+	print_files(std::cout);
+	for(auto& x : content)
 	{
+		std::cout << "Looped" << std::endl;
 		//Remove the occurrence in the file
 		x->remove_occ(this);
 

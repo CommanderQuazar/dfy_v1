@@ -36,6 +36,7 @@ class Folder
 		std::set<file_ptr_t>::iterator end();
 		void print_files(std::ostream& out_s) const;
 		bool chk_exist(const std::string& to_chk);
+		bool empty() { return content.empty(); };
 
 
     private:

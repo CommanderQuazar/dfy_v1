@@ -68,6 +68,8 @@ std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Fol
 	std::string fi_name;
 	do
 	{
+		if(target_folder->second.empty())
+			return "";
 		switch (MODE)
 		{
 			case 0:
@@ -104,6 +106,7 @@ struct double_type FileSystemManager::get_target_double()
 
 	//Get the file to copy
 	auto root_folder = system_layout.second.find(f_name);
+
 	return {root_folder, *root_folder->second.search(fi_name, system_layout.first)};
 }
 
@@ -226,6 +229,11 @@ FileSystemManager &FileSystemManager::move_file()
 	//Check for folders
 	if(is_empty())
 		return *this;
+	else if(system_layout.second.size() <= 1)
+	{
+		std::cerr << "No files to move to" << std::endl;
+		return *this;
+	}
 	//Holds a iterator folder and a file ptr
 	auto user_data = get_target_triple();
 
@@ -246,6 +254,12 @@ FileSystemManager &FileSystemManager::copy()
 	//Check for folders
 	if(is_empty())
 		return *this;
+	else if(system_layout.second.size() <= 1)
+	{
+		std::cerr << "No files to copy to" << std::endl;
+		return *this;
+	}
+
 	//Holds a iterator folder and a file ptr
 	auto user_data = get_target_triple();
 
@@ -269,8 +283,17 @@ FileSystemManager &FileSystemManager::copy()
  */
 FileSystemManager &FileSystemManager::delete_file()
 {
+	if(is_empty())
+		return *this;
 	//Gets a file to delete
 	auto user_data = get_target_double();
+
+	//Check if there are files
+	if(user_data.target->second.empty())
+	{
+		std::cerr << "No files to delete" << std::endl;
+		return *this;
+	}
 
 	//Remove the folder occurrence from the file
 	user_data.action_file->remove_occ(&user_data.target->second);
