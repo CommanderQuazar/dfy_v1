@@ -196,7 +196,7 @@ FileSystemManager &FileSystemManager::create_file()
 	if(system_layout.second.empty())
 	{
 		std::cout << "No available folders" << std::endl;
-		sleep(2);
+		sleep(1);
 		return *this;
 	}
 	std::string fi_name, f_name, content;
@@ -232,6 +232,7 @@ FileSystemManager &FileSystemManager::move_file()
 	else if(system_layout.second.size() <= 1)
 	{
 		std::cerr << "No files to move to" << std::endl;
+		sleep(1);   //Prevents formatting error
 		return *this;
 	}
 	//Holds a iterator folder and a file ptr
@@ -257,6 +258,7 @@ FileSystemManager &FileSystemManager::copy()
 	else if(system_layout.second.size() <= 1)
 	{
 		std::cerr << "No files to copy to" << std::endl;
+		sleep(1);   //Prevents formatting error
 		return *this;
 	}
 
@@ -292,6 +294,7 @@ FileSystemManager &FileSystemManager::delete_file()
 	if(user_data.target->second.empty())
 	{
 		std::cerr << "No files to delete" << std::endl;
+		sleep(1);   //Prevents formatting error
 		return *this;
 	}
 
