@@ -26,6 +26,7 @@ bool FileSystemManager::is_empty() const
 	if(system_layout.second.empty())
 	{
 		std::cerr << "\nNo folders in system" << std::endl;
+		sleep(1);
 		return true;
 	}
 	else
@@ -68,7 +69,8 @@ std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Fol
 	std::string fi_name;
 	do
 	{
-		if(target_folder->second.empty())
+		//If looking for a CURRENT day and its empty return no value string
+		if(target_folder->second.empty() && MODE)
 			return "";
 		switch (MODE)
 		{

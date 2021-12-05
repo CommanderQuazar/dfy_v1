@@ -41,9 +41,9 @@ int main()
 		unsigned int ans;
 		std::cout << "YOUR FILE SYSTEM - " << sys_mgr.get_counter() << std::endl;
 		sys_mgr.display_all();
-		std::cout << "+-----------------+" << std::endl;
+		std::cout << "\n+-----------------+" << std::endl;
 
-		std::cout << "\n\n1. Create Folder\n2. Create File\n3. Move File\n4. Copy File\n5. Delete File\n6. Delete Folder\n"
+		std::cout << "1. Create Folder\n2. Create File\n3. Move File\n4. Copy File\n5. Delete File\n6. Delete Folder\n"
 					 "+-----------------+" << std::endl;
 		ans = get_ans(6);
 
