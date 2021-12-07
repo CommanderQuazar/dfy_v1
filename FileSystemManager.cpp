@@ -25,7 +25,8 @@ bool FileSystemManager::is_empty() const
 {
 	if(system_layout.second.empty())
 	{
-		std::cerr << "\nNo folders in system" << std::endl;
+		std::cerr << "\nNo folders in system"
+		          << std::endl;
 		sleep(1);
 		return true;
 	}
@@ -41,9 +42,15 @@ bool FileSystemManager::is_empty() const
 std::string FileSystemManager::get_folder_name(int MODE)
 {
 	std::string f_name;
+	bool failed = false;
 
 	do
 	{
+		if(failed)
+		{
+			std::cerr << "Invalid entry, try again";
+			sleep(1);
+		}
 		switch (MODE)
 		{
 			case 0:
@@ -55,6 +62,7 @@ std::string FileSystemManager::get_folder_name(int MODE)
 			default:
 				;   //No option
 		}
+		failed = true;
 	}
 	while(std::cin >> f_name && chk_folder_name(f_name) != MODE);
 	return f_name;
@@ -67,11 +75,15 @@ std::string FileSystemManager::get_folder_name(int MODE)
 std::string FileSystemManager::get_file_name(int MODE, std::map<std::string, Folder>::iterator target_folder)
 {
 	std::string fi_name;
+
+	//If looking for a CURRENT day and its empty return no value string
+	if(target_folder->second.empty() && MODE)
+	{
+		return "";
+	}
+
 	do
 	{
-		//If looking for a CURRENT day and its empty return no value string
-		if(target_folder->second.empty() && MODE)
-			return "";
 		switch (MODE)
 		{
 			case 0:
@@ -141,12 +153,12 @@ struct triple_type FileSystemManager::get_target_triple()
  */
 FileSystemManager& FileSystemManager::display_all_folders()
 {
-    out << "ALL FOLDERS:" << std::endl;
-    for(const auto& x : system_layout.second)
-    {
-        out << x.second.get_folder_name() << std::endl;
-    }
-    return *this;
+	out << "ALL FOLDERS:" << std::endl;
+	for(const auto& x : system_layout.second)
+	{
+			out << x.second.get_folder_name() << std::endl;
+	}
+	return *this;
 }
 
 /*
@@ -154,9 +166,9 @@ FileSystemManager& FileSystemManager::display_all_folders()
  */
 FileSystemManager& FileSystemManager::display_all_files()
 {
-    out << "ALL FILES IN SYSTEM:" << std::endl;
-    system_layout.first.print_all();
-    return *this;
+	out << "ALL FILES IN SYSTEM:" << std::endl;
+	system_layout.first.print_all();
+	return *this;
 }
 
 /*
@@ -167,9 +179,9 @@ FileSystemManager& FileSystemManager::display_all()
     out << "ALL FOLDERS AND FILES:" << std::endl;
     for(const auto& x : system_layout.second)
     {
-        out << x.second.get_folder_name()
-            << std::endl;
-        x.second.print_files(out);
+			out << x.second.get_folder_name()
+					<< std::endl;
+			x.second.print_files(out);
     }
     return *this;
 }
@@ -179,7 +191,7 @@ FileSystemManager& FileSystemManager::display_all()
  */
 FileSystemManager &FileSystemManager::create_folder()
 {
-    std::string f_name = get_folder_name(IS_NEW);
+	std::string f_name = get_folder_name(IS_NEW);
 
 	system_layout.second.insert(std::pair(f_name, Folder(f_name)));
 	return *this;
@@ -192,13 +204,14 @@ FileSystemManager &FileSystemManager::create_file()
 {
 	//Check for folders
 	if(is_empty())
+	{
 		return *this;
+	}
 
 	//Check if folders exist in the system
 	if(system_layout.second.empty())
 	{
-		std::cout << "No available folders" << std::endl;
-		sleep(1);
+		std::cout << "No available folders" << std::endl; sleep(1);
 		return *this;
 	}
 	std::string fi_name, f_name, content;
@@ -230,11 +243,12 @@ FileSystemManager &FileSystemManager::move_file()
 {
 	//Check for folders
 	if(is_empty())
+	{
 		return *this;
+	}
 	else if(system_layout.second.size() <= 1)
 	{
-		std::cerr << "No files to move to" << std::endl;
-		sleep(1);   //Prevents formatting error
+		std::cerr << "No files to move to" << std::endl; sleep(1);
 		return *this;
 	}
 	//Holds a iterator folder and a file ptr
@@ -242,7 +256,9 @@ FileSystemManager &FileSystemManager::move_file()
 
 	//Check weather the file is already in the selected target folder
 	if(user_data.target->second.chk_exist(user_data.action_file->get_name()))
+	{
 		return *this;
+	}
 
 	//Reassigns pointers in folders
 	user_data.target->second.move(user_data.action_file, &user_data.root->second);
@@ -256,11 +272,12 @@ FileSystemManager &FileSystemManager::copy()
 {
 	//Check for folders
 	if(is_empty())
+	{
 		return *this;
+	}
 	else if(system_layout.second.size() <= 1)
 	{
-		std::cerr << "No files to copy to" << std::endl;
-		sleep(1);   //Prevents formatting error
+		std::cerr << "No files to copy to" << std::endl; sleep(1);
 		return *this;
 	}
 
@@ -269,7 +286,9 @@ FileSystemManager &FileSystemManager::copy()
 
 	//Check weather the file is already in the selected target folder
 	if(user_data.target->second.chk_exist(user_data.action_file->get_name()))
+	{
 		return *this;
+	}
 
 	//Assign new occurrence
 	user_data.action_file->add_occ(&user_data.target->second);
@@ -288,15 +307,17 @@ FileSystemManager &FileSystemManager::copy()
 FileSystemManager &FileSystemManager::delete_file()
 {
 	if(is_empty())
+	{
 		return *this;
+	}
+
 	//Gets a file to delete
 	auto user_data = get_target_double();
 
 	//Check if there are files
 	if(user_data.target->second.empty())
 	{
-		std::cerr << "No files to delete" << std::endl;
-		sleep(1);   //Prevents formatting error
+		std::cerr << "No files to delete" << std::endl; sleep(1);
 		return *this;
 	}
 
@@ -318,7 +339,9 @@ FileSystemManager &FileSystemManager::delete_folder()
 {
 	//Check for folders
 	if(is_empty())
+	{
 		return *this;
+	}
 
 	//Get a folder to delete
 	std::string f_name = get_folder_name(IS_CURR);
@@ -333,5 +356,9 @@ FileSystemManager &FileSystemManager::delete_folder()
 
 	return *this;
 }
+
+/*
+ * Prints out the content of a file
+ */
 
 

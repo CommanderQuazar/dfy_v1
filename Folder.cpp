@@ -9,7 +9,11 @@
  */
 bool Folder::chk_exist(const std::string &to_chk)
 {
-	return content.find(std::make_shared<File>(to_chk)) != content.end();
+	bool ret = content.find(std::make_shared<File>(to_chk)) != content.end();
+	if(ret)
+		std::cerr << "File name already exists, try again" << std::endl;
+	sleep(1);
+	return ret;
 }
 
 /*
@@ -25,16 +29,16 @@ std::set<file_ptr_t>::iterator Folder::end()
  */
 Folder& Folder::add(File &file, HashMap& map)
 {
-    //Add file to the hashmap
-    auto location = map.add(file.get_name(), file);
+	//Add file to the hashmap
+	auto location = map.add(file.get_name(), file);
 
-    //Adds occurrence to the File obj
-    file.add_occ(this);
+	//Adds occurrence to the File obj
+	file.add_occ(this);
 
-    //Add a ptr to content that points to the file in the hash map
-    content.insert(location);
+	//Add a ptr to content that points to the file in the hash map
+	content.insert(location);
 
-    return *this;
+	return *this;
 }
 
 /*
@@ -73,12 +77,12 @@ Folder &Folder::remove(const file_ptr_t& key, HashMap& map)
  */
 std::set<file_ptr_t>::iterator Folder::search(std::string& term, HashMap& map)
 {
-    auto ret = map.lookup(term);
-    auto iter_hit = content.find(ret.second);
-    if(ret.first && iter_hit != content.end())
-        return iter_hit;
-    else
-        return content.end();
+	auto ret = map.lookup(term);
+	auto iter_hit = content.find(ret.second);
+	if(ret.first && iter_hit != content.end())
+			return iter_hit;
+	else
+			return content.end();
 }
 
 /*
@@ -86,8 +90,8 @@ std::set<file_ptr_t>::iterator Folder::search(std::string& term, HashMap& map)
  */
 void Folder::print_files(std::ostream& out_s) const
 {
-    for(const auto& x : content)
-        out_s << "\t" << x->get_name() << std::endl;
+	for(const auto& x : content)
+			out_s << "\t" << x->get_name() << std::endl;
 }
 
 /*

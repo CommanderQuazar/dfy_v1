@@ -1,9 +1,7 @@
 //
 // Created by Tobey Ragain on 11/12/21.
 //
-
 #include "HashMap.h"
-#include <memory>
 
 /*
  * Removes a file from the HashMap
@@ -12,9 +10,13 @@ HashMap& HashMap::remove(const std::string& name)
 {
     auto ret = hash_set.find(name);
     if(ret == hash_set.end())
-        return *this;
+		{
+	    return *this;
+    }
     else
-        hash_set.erase(name);
+    {
+	    hash_set.erase(name);
+    }
     return *this;
 }
 
@@ -37,9 +39,13 @@ std::pair<size_t, std::shared_ptr<File>> HashMap::lookup(const std::string& look
 {
     auto ret = hash_set.find(lookup_file);
     if(ret == hash_set.end())
-        return {0, nullptr};
+    {
+	    return {0, nullptr};
+    }
     else
-        return {1, ret->second};
+    {
+	    return {1, ret->second};
+    }
 }
 
 /*

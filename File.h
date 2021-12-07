@@ -7,20 +7,29 @@
 
 #include <iostream>
 #include <set>
+
 class Folder;
 class File
 {
 
 	public:
 
-		explicit File(std::string name, std::string init_msg = "") : msg(std::move(init_msg)), file_name(std::move(name)) { };
-        File(std::string name, std::string init_msg, Folder * add_folder) : msg(std::move(init_msg)), file_name(std::move(name)) { occurrences.insert(add_folder); };
-        File(std::string name, std::string init_msg, std::initializer_list<Folder*> to_add_f) : msg(std::move(init_msg)), file_name(std::move(name))
-                { occurrences.insert(to_add_f.begin(), to_add_f.end()); };
-        File(File&& to_move) noexcept : msg(std::move(to_move.msg)), occurrences(std::move(to_move.occurrences)) { };
+		explicit File(std::string name, std::string init_msg = "") :
+			msg(std::move(init_msg)),
+			file_name(std::move(name)) { };
+        File(std::string name, std::string init_msg, Folder * add_folder) :
+			msg(std::move(init_msg)),
+			file_name(std::move(name)) { occurrences.insert(add_folder); };
+        File(std::string name, std::string init_msg, std::initializer_list<Folder*> to_add_f) :
+			msg(std::move(init_msg)),
+			file_name(std::move(name)) { occurrences.insert(to_add_f.begin(), to_add_f.end()); };
+        File(File&& to_move) noexcept :
+			msg(std::move(to_move.msg)),
+			occurrences(std::move(to_move.occurrences)) { };
 		File(File& to_copy) = default;
         ~File() = default;
-        File& operator=(const File& rhs);
+
+		File& operator=(const File& rhs);
 
 		std::string& get_msg() { return msg; };
 		std::string& get_name() { return file_name; }

@@ -15,7 +15,9 @@ unsigned int get_ans(size_t range)
 		int user_ans;
 		std::cin >> user_ans;
 		if(user_ans <= range && user_ans >= 0)
+		{
 			return user_ans;
+		}
 		else
 		{
 			//If user has entered four invalid entries program returns to main menu
@@ -45,7 +47,7 @@ int main()
 
 		std::cout << "1. Create Folder\n2. Create File\n3. Move File\n4. Copy File\n5. Delete File\n6. Delete Folder\n"
 					 "+-----------------+" << std::endl;
-		ans = get_ans(6);
+		ans = get_ans(7);
 
 		switch(ans)
 		{
@@ -66,6 +68,9 @@ int main()
 				break;
 			case 6:
 				sys_mgr.delete_folder();
+				break;
+			case 7:
+				//View file content
 				break;
 			case 0:
 				std::cout << "Quitting..." << std::endl;

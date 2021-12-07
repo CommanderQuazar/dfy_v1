@@ -6,9 +6,10 @@
 #define DFY_V1_FILESYSTEMMANAGER_H
 
 #include <map>
+#include <unistd.h>
+
 #include "HashMap.h"
 #include "Folder.h"
-#include "unistd.h"
 
 /*
  * Target - the folder which to act on
@@ -18,7 +19,7 @@
 
 struct triple_type
 {
-	std::map<std::string, Folder>::iterator target;
+  std::map<std::string, Folder>::iterator target;
 	std::shared_ptr<File> action_file;
 	std::map<std::string, Folder>::iterator root;
 };
