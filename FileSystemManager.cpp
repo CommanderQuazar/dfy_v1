@@ -166,7 +166,8 @@ FileSystemManager& FileSystemManager::display_all_folders()
  */
 FileSystemManager& FileSystemManager::display_all_files()
 {
-	out << "ALL FILES IN SYSTEM:" << std::endl;
+	out << "ALL FILES IN SYSTEM:"
+	    << std::endl;
 	system_layout.first.print_all();
 	return *this;
 }
@@ -176,7 +177,8 @@ FileSystemManager& FileSystemManager::display_all_files()
  */
 FileSystemManager& FileSystemManager::display_all()
 {
-    out << "ALL FOLDERS AND FILES:" << std::endl;
+    out << "ALL FOLDERS AND FILES:"
+		<< std::endl;
     for(const auto& x : system_layout.second)
     {
 			out << x.second.get_folder_name()
@@ -211,7 +213,9 @@ FileSystemManager &FileSystemManager::create_file()
 	//Check if folders exist in the system
 	if(system_layout.second.empty())
 	{
-		std::cout << "No available folders" << std::endl; sleep(1);
+		std::cout << "No available folders"
+				  << std::endl;
+		sleep(1);
 		return *this;
 	}
 	std::string fi_name, f_name, content;
@@ -248,7 +252,9 @@ FileSystemManager &FileSystemManager::move_file()
 	}
 	else if(system_layout.second.size() <= 1)
 	{
-		std::cerr << "No files to move to" << std::endl; sleep(1);
+		std::cerr << "No files to move to"
+				  << std::endl;
+		sleep(1);
 		return *this;
 	}
 	//Holds a iterator folder and a file ptr
@@ -277,7 +283,9 @@ FileSystemManager &FileSystemManager::copy()
 	}
 	else if(system_layout.second.size() <= 1)
 	{
-		std::cerr << "No files to copy to" << std::endl; sleep(1);
+		std::cerr << "No files to copy to"
+			      << std::endl;
+		sleep(1);
 		return *this;
 	}
 
@@ -317,7 +325,9 @@ FileSystemManager &FileSystemManager::delete_file()
 	//Check if there are files
 	if(user_data.target->second.empty())
 	{
-		std::cerr << "No files to delete" << std::endl; sleep(1);
+		std::cerr << "No files to delete"
+				  << std::endl;
+		sleep(1);
 		return *this;
 	}
 
@@ -360,5 +370,31 @@ FileSystemManager &FileSystemManager::delete_folder()
 /*
  * Prints out the content of a file
  */
+FileSystemManager &FileSystemManager::view_file_content()
+{
+	//Check for folders
+	if(is_empty())
+	{
+		return *this;
+	}
+
+	//Gets a file to delete
+	auto user_data = get_target_double();
+
+	//Check if there are files
+	if(user_data.target->second.empty())
+	{
+		std::cerr << "No files to view"
+				  << std::endl;
+		sleep(1);
+		return *this;
+	}
+
+	std::cout << "File content: "
+			  << user_data.action_file->get_msg()
+			  << std::endl;
+	return *this;
+}
+
 
 

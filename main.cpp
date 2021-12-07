@@ -41,12 +41,21 @@ int main()
 	while(true)
 	{
 		unsigned int ans;
-		std::cout << "YOUR FILE SYSTEM - " << sys_mgr.get_counter() << std::endl;
-		sys_mgr.display_all();
-		std::cout << "\n+-----------------+" << std::endl;
+		std::cout << "YOUR FILE SYSTEM - "
+				  << sys_mgr.get_counter()
+				  << std::endl;
 
-		std::cout << "1. Create Folder\n2. Create File\n3. Move File\n4. Copy File\n5. Delete File\n6. Delete Folder\n"
-					 "+-----------------+" << std::endl;
+		sys_mgr.display_all();
+
+		std::cout << "\n+-----------------+"
+				  << std::endl;
+
+		std::cout << "1. Create Folder 2. Create File\n"
+					 "3. Move File     4. Copy File\n"
+					 "5. Delete File   6. Delete Folder\n"
+					 "7. View File\n"
+					 "+-----------------+"
+			      << std::endl;
 		ans = get_ans(7);
 
 		switch(ans)
@@ -70,10 +79,11 @@ int main()
 				sys_mgr.delete_folder();
 				break;
 			case 7:
-				//View file content
+				sys_mgr.view_file_content();
 				break;
 			case 0:
-				std::cout << "Quitting..." << std::endl;
+				std::cout << "Quitting..."
+						  << std::endl;
 				sleep(1);
 				return 1;
 			default:

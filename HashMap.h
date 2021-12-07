@@ -16,8 +16,8 @@ class HashMap
 {
     public:
         HashMap() = default;
-        explicit HashMap(const std::string& name, File& file_obj) { hash_set.insert(
-				{name, std::make_shared<File>(file_obj)}); };
+        explicit HashMap(const std::string& name, File& file_obj)
+			{ hash_set.insert({name, std::make_shared<File>(file_obj)}); };
         std::shared_ptr<File> add(const std::string& name, File& to_add);
         HashMap& remove(const std::string& name);
         std::pair<size_t, std::shared_ptr<File>> lookup(const std::string& lookup_msg);

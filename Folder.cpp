@@ -11,8 +11,10 @@ bool Folder::chk_exist(const std::string &to_chk)
 {
 	bool ret = content.find(std::make_shared<File>(to_chk)) != content.end();
 	if(ret)
+	{
 		std::cerr << "File name already exists, try again" << std::endl;
-	sleep(1);
+		sleep(1);
+	}
 	return ret;
 }
 
@@ -29,13 +31,13 @@ std::set<file_ptr_t>::iterator Folder::end()
  */
 Folder& Folder::add(File &file, HashMap& map)
 {
-	//Add file to the hashmap
+	// Add file to the hashmap
 	auto location = map.add(file.get_name(), file);
 
-	//Adds occurrence to the File obj
+	// Adds occurrence to the File obj
 	file.add_occ(this);
 
-	//Add a ptr to content that points to the file in the hash map
+	// Add a ptr to content that points to the file in the hash map
 	content.insert(location);
 
 	return *this;
@@ -46,11 +48,11 @@ Folder& Folder::add(File &file, HashMap& map)
  */
 Folder &Folder::move(const file_ptr_t& m_file, Folder * root_f)
 {
-	//Adds and remove occurrence to the File obj
+	// Adds and remove occurrence to the File obj
 	m_file->remove_occ(root_f);
 	m_file->add_occ(this);
 
-	//Add a ptr to content that points to the file in the hash map
+	// Add a ptr to content that points to the file in the hash map
 	content.insert(m_file);
 	return *this;
 }
@@ -66,7 +68,9 @@ Folder &Folder::remove(const file_ptr_t& key, HashMap& map)
 
 	//TODO More than one file name possible
     if(key.use_count() == 1)
-        map.remove(key->get_name());
+    {
+	    map.remove(key->get_name());
+    }
     return *this;
 }
 
@@ -80,9 +84,13 @@ std::set<file_ptr_t>::iterator Folder::search(std::string& term, HashMap& map)
 	auto ret = map.lookup(term);
 	auto iter_hit = content.find(ret.second);
 	if(ret.first && iter_hit != content.end())
-			return iter_hit;
+	{
+		return iter_hit;
+	}
 	else
-			return content.end();
+	{
+		return content.end();
+	}
 }
 
 /*
@@ -91,7 +99,9 @@ std::set<file_ptr_t>::iterator Folder::search(std::string& term, HashMap& map)
 void Folder::print_files(std::ostream& out_s) const
 {
 	for(const auto& x : content)
-			out_s << "\t" << x->get_name() << std::endl;
+	{
+		out_s << "\t" << x->get_name() << std::endl;
+	}
 }
 
 /*
@@ -103,15 +113,17 @@ Folder &Folder::clear_files(HashMap& map)
 	for(auto& x : content)
 	{
 		std::cout << "Looped" << std::endl;
-		//Remove the occurrence in the file
+		// Remove the occurrence in the file
 		x->remove_occ(this);
 
 		//Erase the data from the content
 		content.erase(x);
 
-		//Check is the file should be removed from the HashMap
+		// Check is the file should be removed from the HashMap
 		if(x.use_count() == 1)
+		{
 			map.remove(x->get_name());
+		}
 	}
 	return *this;
 }
