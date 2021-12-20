@@ -6,6 +6,7 @@
 
 /*
  * Clear logic for MacOS/Unix and Win10
+ * Not in use currently
  */
 void FileSystemManager::clearScreen()
 {
