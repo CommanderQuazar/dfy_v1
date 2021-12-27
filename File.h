@@ -11,7 +11,6 @@
 class Folder;
 class File
 {
-
 	public:
 		explicit File(std::string name, std::string init_msg = "") :
 			msg(std::move(init_msg)),
