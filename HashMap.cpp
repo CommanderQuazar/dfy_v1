@@ -10,7 +10,7 @@ HashMap& HashMap::remove(const std::string& name)
 {
     auto ret = hash_set.find(name);
     if(ret == hash_set.end())
-		{
+	{
 	    return *this;
     }
     else

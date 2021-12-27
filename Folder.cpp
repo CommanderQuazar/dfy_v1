@@ -12,7 +12,8 @@ bool Folder::chk_exist(const std::string &to_chk)
 	bool ret = content.find(std::make_shared<File>(to_chk)) != content.end();
 	if(ret)
 	{
-		std::cerr << "File name already exists, try again" << std::endl;
+		std::cerr << "File name already exists, try again"
+				  << std::endl;
 		sleep(1);
 	}
 	return ret;
