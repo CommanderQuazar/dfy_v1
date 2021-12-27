@@ -24,7 +24,8 @@ class Folder
 	public:
 		Folder() = default;
 		explicit Folder(std::string f_name) :
-			folder_name(std::move(f_name)) { };
+			folder_name(std::move(f_name))
+			{ };
 		//Folder(const Folder& copy) : folder_name(copy.get_folder_name()), content(copy.get_content()){ };
 
 		Folder& add(File& file, HashMap& map);
