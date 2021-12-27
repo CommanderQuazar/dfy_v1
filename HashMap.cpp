@@ -39,7 +39,7 @@ std::pair<size_t, std::shared_ptr<File>> HashMap::lookup(const std::string& look
 {
     auto ret = hash_set.find(lookup_file);
     if(ret == hash_set.end())
-    {
+	{
 	    return {0, nullptr};
     }
     else
