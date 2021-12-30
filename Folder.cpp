@@ -102,7 +102,7 @@ void Folder::print_files(std::ostream& out_s) const
 	for(const auto& x : content)
 	{
 		out_s << "\t" << x->get_name() << std::endl;
-	}
+    }
 }
 
 /*
